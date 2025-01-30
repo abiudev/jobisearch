@@ -1,5 +1,5 @@
 import type React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import {
@@ -123,6 +123,8 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => {
 const JobList: React.FC = () => {
   const { jobs, status, error } = useSelector((state: RootState) => state.jobs);
 
+  const searchTerm = useSelector((state: RootState) => state.jobs.searchTerm);
+
   if (status === "loading")
     return <div className="text-center py-8">Loading...</div>;
   if (status === "failed")
@@ -132,7 +134,9 @@ const JobList: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Job Listings</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">
+        Job Listings for <span>{searchTerm}</span>
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map((job: Job) => (
           <JobCard key={job.job_id} job={job} />
