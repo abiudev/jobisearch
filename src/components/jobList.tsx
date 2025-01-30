@@ -113,7 +113,6 @@ const JobList: React.FC = () => {
   const [savedJobs, setSavedJobs] = useState<string[]>([]);
 
   useEffect(() => {
-    // Fetch jobs from your API here
     const fetchJobs = async () => {
       try {
         const response = await fetch("your-api-endpoint");

@@ -1,18 +1,25 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FetchJobs } from "@/components/fetchJobs";
-import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   jobs: [],
   status: "idle",
-  searchTerm: "string",
-  selectedCountry: "string",
-  error: "string",
+  searchTerm: "",
+  selectedCountry: "",
+  error: "",
 };
 
 const jobSlice = createSlice({
   name: "jobs",
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchTerm(state, action: PayloadAction<string>) {
+      state.searchTerm = action.payload;
+    },
+    setSelectedCountry(state, action: PayloadAction<string>) {
+      state.selectedCountry = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(FetchJobs.pending, (state) => {
@@ -24,10 +31,10 @@ const jobSlice = createSlice({
       })
       .addCase(FetchJobs.rejected, (state, action) => {
         state.status = "error";
-        state.error =
-          action.error.message || "An unknown error must have occured";
+        state.error = action.error.message || "An unknown error occurred";
       });
   },
 });
 
+export const { setSearchTerm, setSelectedCountry } = jobSlice.actions;
 export const jobReducer = jobSlice.reducer;

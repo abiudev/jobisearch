@@ -1,5 +1,5 @@
 import type React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import {
