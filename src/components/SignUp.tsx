@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,58 +18,46 @@ export default function SignUp() {
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const validateForm = () => {
-    const formErrors = {};
-    if (!name.trim()) {
-      formErrors.name = "Name is required";
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) {
-      formErrors.email = "Email is required";
-    } else if (!emailRegex.test(email)) {
-      formErrors.email = "Invalid email format";
-    }
-    if (!password) {
-      formErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      formErrors.password = "Password must be at least 6 characters long";
-    }
-    return formErrors;
-  };
-
   return (
     <>
-      <div className="h-[100vh] items-center flex justify-center px-5 lg:px-0">
-        <div className=" border-2 border-green-500 max-w-screen-lg bg-white  shadow sm:rounded-lg flex justify-center flex-1">
-          <div className=" flex-1 bg-green-100 text-center hidden md:flex ">
+      <div className="h-[100vh] flex items-center justify-center px-5 lg:px-0">
+        <div
+          className="max-w-screen-lg flex justify-center flex-1 
+          bg-gray-100 shadow-lg rounded-lg 
+          md:bg-white md:shadow-lg md:rounded-none md:border-2 md:border-teal-500"
+        >
+          <div className="hidden md:flex flex-1 bg-teal-100 text-center">
             <div
               className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url('/Podcast-SignUp.svg')`,
+                backgroundImage: `url('/signup.svg')`,
               }}
             ></div>
           </div>
+
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="flex flex-col items-center">
               <div className="text-center">
-                <h1 className="font-roboto-condensed text-3xl xl:text-4xl font-extrabold text-green-700">
+                <h1 className="font-roboto-condensed text-3xl xl:text-4xl font-extrabold text-teal-600">
                   Sign up
                 </h1>
-                <p className="text-[16px] font-mukta text-green-500">
-                  Your Podcastful Journey Starts Here!
+                <p className="text-[16px] font-mukta text-teal-500">
+                  Your Career Journey Starts Here!
                 </p>
               </div>
+
               <div className="w-full flex-1 mt-8">
                 <div className="mx-auto max-w-xs flex flex-col gap-4">
                   <input
-                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-green-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
                     placeholder="Name"
                     onChange={(e) => setName(e.target.value)}
                   />
                   {errors.name && <p className="text-red-500">{errors.name}</p>}
+
                   <input
-                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-green-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="email"
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
@@ -76,8 +65,9 @@ export default function SignUp() {
                   {errors.email && (
                     <p className="text-red-500">{errors.email}</p>
                   )}
+
                   <input
-                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-green-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +75,8 @@ export default function SignUp() {
                   {errors.password && (
                     <p className="text-red-500">{errors.password}</p>
                   )}
-                  <button className="mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-400 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+
+                  <button className="mt-5 tracking-wide font-semibold bg-teal-500 text-gray-100 w-full py-4 rounded-lg hover:bg-teal-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                     <svg
                       className="w-6 h-6 -ml-2"
                       fill="none"
@@ -100,12 +91,14 @@ export default function SignUp() {
                     </svg>
                     <span className="ml-3">Sign Up</span>
                   </button>
+
                   <p className="mt-6 font-mukta text-s text-gray-700 text-center">
                     Already have an account?{" "}
-                    <button className="text-green-500 font-semibold">
+                    <button className="text-teal-500 font-semibold">
                       Sign in
                     </button>
                   </p>
+
                   <div className="flex justify-center items-center space-x-4">
                     <button className="p-2 rounded-lg hover:scale-105 transition transform duration-300 shadow-lg">
                       <img
@@ -138,7 +131,7 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-      <ToastContainer />;
+      <ToastContainer />
     </>
   );
 }

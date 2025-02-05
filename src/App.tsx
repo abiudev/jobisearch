@@ -13,11 +13,18 @@ export default function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <HeroSection />
+                <SearchBar />
+                <JobList />
+              </>
+            }
+          />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
-        <HeroSection />
-        <SearchBar />
-        <JobList />
       </Router>
     </Provider>
   );
