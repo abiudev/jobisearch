@@ -19,21 +19,16 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300  ease-in-out
+      className={`fixed  top-0 left-0 right-0 z-50 transition-all  duration-300  ease-in-out
       ${
         isScrolled
           ? "h-16 bg-white shadow-md rounded-b-lg border-b border-teal-600"
-          : "h-20 bg-white"
+          : "h-20 bg-white rounded-b-lg border-b border-teal-600"
       }`}
     >
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
         <a href="/" className="flex items-center space-x-2">
-          <img
-            src="/jslogo.png"
-            width={100}
-            height={100}
-            className="mt-2 sm:ml-0 w-auto h-[200px] transition-all duration-300"
-          />
+          <img src="/jslogo.png" width={120} height={120} />
         </a>
 
         <div className="hidden  md:flex space-x-6">

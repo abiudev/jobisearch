@@ -43,7 +43,7 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => {
     <Card className="w-full max-w-md flex flex-col">
       <CardHeader className="flex flex-row items-center gap-4">
         <img
-          src={job.employer_logo || "/placeholder.svg?height=64&width=64"}
+          src={job.employer_logo || "/jslogo.png?height=64&width=64"}
           alt={`${job.employer_name} logo`}
           className="w-16 h-16 object-contain"
         />
@@ -130,10 +130,14 @@ const JobList: React.FC = () => {
   if (status === "failed")
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   if (!jobs.length)
-    return <div className="text-center py-8">No jobs found.</div>;
+    return (
+      <div className="text-center py-8">
+        Serch for Some Jobs to see the Magic
+      </div>
+    );
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto  py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">
         Job Listings for <span>{searchTerm}</span>
       </h1>

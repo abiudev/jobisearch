@@ -8,7 +8,7 @@ import HeroSection from "./components/heroSection";
 export default function App() {
   return (
     <Provider store={store}>
-      <div className="bg-teal-100">
+      <div className="bg-teal-300 min-h-screen">
         <Navbar />
         <HeroSection />
         <SearchBar />
