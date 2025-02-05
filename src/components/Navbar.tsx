@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 import { Coffee, Home, Phone, Briefcase, Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +46,9 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="outline">Sign In</Button>
+          <Button variant="outline" onClick={() => navigate("/signup")}>
+            Sign In
+          </Button>
           <Button className="bg-teal-600">
             <Coffee className="mr-2 h-4 w-4 " /> Buy me coffee
           </Button>
