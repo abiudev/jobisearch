@@ -135,8 +135,8 @@ const JobList: React.FC = () => {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   if (!jobs.length)
     return (
-      <div className="text-center py-8">
-        Serch for  Jobs 
+      <div className="text-center text-red font-bold text-2xl py-8">
+       Third Party API provider Down..Please try again Later
       </div>
     );
 
