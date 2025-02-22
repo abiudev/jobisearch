@@ -27,6 +27,8 @@ const jobSlice = createSlice({
       })
       .addCase(FetchJobs.fulfilled, (state, action) => {
         state.status = "success";
+        state.searchTerm=action.meta.arg.searchTerm;
+        state.selectedCountry=action.meta.arg.selectedCountry;
         state.jobs = action.payload;
       })
       .addCase(FetchJobs.rejected, (state, action) => {

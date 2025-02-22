@@ -33,7 +33,7 @@ export const FetchJobs = createAsyncThunk(
         const response = await axios.request(options);
         console.log(response.data);
         console.log(selectedCountry);
-        console.log(searchTerm);
+        // console.log(searchTerm);
       } catch (error) {
         console.error(error);
       }

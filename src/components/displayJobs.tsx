@@ -27,6 +27,8 @@ interface Job {
   job_salary_max: number;
   job_is_remote: boolean;
   job_benefits: string[] | null;
+  
+
 }
 
 const truncateDescription = (description: string, wordLimit = 55) => {
@@ -124,6 +126,8 @@ const JobList: React.FC = () => {
   const { jobs, status, error } = useSelector((state: RootState) => state.jobs);
 
   const searchTerm = useSelector((state: RootState) => state.jobs.searchTerm);
+  
+
 
   if (status === "loading")
     return <div className="text-center py-8">Loading...</div>;
@@ -132,14 +136,14 @@ const JobList: React.FC = () => {
   if (!jobs.length)
     return (
       <div className="text-center py-8">
-        Serch for Some Jobs to see the Magic
+        Serch for  Jobs 
       </div>
     );
 
   return (
     <div className="container mx-auto  py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">
-        Job Listings for <span>{searchTerm}</span>
+        Job Listings for <span>{searchTerm}</span> 
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map((job: Job) => (
