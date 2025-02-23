@@ -23,21 +23,14 @@ export const FetchJobs = createAsyncThunk(
           date_posted: "all",
         },
         headers: {
-          "x-rapidapi-key":
-            "2d12bdeb1amsh08886e74d320870p10d4b1jsneb8a25492f69",
+          "x-rapidapi-key": import.meta.env.VITE_RAPIDAPI_KEY,
           "x-rapidapi-host": "jsearch.p.rapidapi.com",
         },
       };
 
-      try {
-        const response = await axios.request(options);
-        console.log(response.data);
-        console.log(selectedCountry);
-        // console.log(searchTerm);
-      } catch (error) {
-        console.error(error);
-      }
       const response = await axios.request(options);
+      console.log(response.data);
+      
       return response.data.data;
     } catch (error: unknown) {
       if (error instanceof Error) {
