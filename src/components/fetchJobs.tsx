@@ -27,7 +27,7 @@ export const FetchJobs = createAsyncThunk(
           "x-rapidapi-host": "jsearch.p.rapidapi.com",
         },
       };
-      console.log("API Key:", import.meta.env.VITE_RAPIDAPI_KEY);
+     
 
 
       const response = await axios.request(options);
