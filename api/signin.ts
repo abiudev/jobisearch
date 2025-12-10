@@ -24,6 +24,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL is not set');
+      return res.status(500).json({ error: 'Database configuration error' });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set');
+      return res.status(500).json({ error: 'Authentication configuration error' });
+    }
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -64,8 +74,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         createdAt: user.created_at,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Signin error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ 
+      error: 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
+
