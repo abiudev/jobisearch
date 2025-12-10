@@ -1,64 +1,33 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signup } from "../store/slices/authSlice";
+import { signin } from "../store/slices/authSlice";
 import { AppDispatch, RootState } from "../store/store";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function SignUp() {
+export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
   
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  interface FormErrors {
-    name?: string;
-    email?: string;
-    password?: string;
-  }
-
-  const [errors, setErrors] = useState<FormErrors>({});
-
-  const validateForm = () => {
-    const newErrors: FormErrors = {};
-    
-    if (!name.trim()) {
-      newErrors.name = "Name is required";
-    }
-    
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Invalid email format";
-    }
-    
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) {
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
       return;
     }
 
     try {
-      await dispatch(signup({ name, email, password })).unwrap();
-      toast.success("Account created successfully!");
+      await dispatch(signin({ email, password })).unwrap();
+      toast.success("Login successful!");
       setTimeout(() => navigate("/"), 1000);
     } catch (err: any) {
-      toast.error(err || "Signup failed");
+      toast.error(err || "Login failed");
     }
   };
 
@@ -83,25 +52,15 @@ export default function SignUp() {
             <div className="flex flex-col items-center">
               <div className="text-center">
                 <h1 className="font-roboto-condensed text-3xl xl:text-4xl font-extrabold text-teal-600">
-                  Sign up
+                  Sign in
                 </h1>
                 <p className="text-[16px] font-mukta text-teal-500">
-                  Your Career Journey Starts Here!
+                  Welcome back! Continue your journey
                 </p>
               </div>
 
               <div className="w-full flex-1 mt-8">
                 <form onSubmit={handleSubmit} className="mx-auto max-w-xs flex flex-col gap-4">
-                  <input
-                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={loading}
-                  />
-                  {errors.name && <p className="text-red-500 text-sm -mt-2">{errors.name}</p>}
-
                   <input
                     className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="email"
@@ -110,9 +69,6 @@ export default function SignUp() {
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm -mt-2">{errors.email}</p>
-                  )}
 
                   <input
                     className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-teal-400 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
@@ -122,9 +78,6 @@ export default function SignUp() {
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                   />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm -mt-2">{errors.password}</p>
-                  )}
 
                   <button 
                     type="submit"
@@ -139,50 +92,23 @@ export default function SignUp() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
-                      <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                      <circle cx="8.5" cy="7" r="4" />
-                      <path d="M20 8v6M23 11h-6" />
+                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                      <polyline points="10 17 15 12 10 7" />
+                      <line x1="15" y1="12" x2="3" y2="12" />
                     </svg>
-                    <span className="ml-3">{loading ? "Creating account..." : "Sign Up"}</span>
+                    <span className="ml-3">{loading ? "Signing in..." : "Sign In"}</span>
                   </button>
 
                   <p className="mt-6 font-mukta text-s text-gray-700 text-center">
-                    Already have an account?{" "}
+                    Don't have an account?{" "}
                     <button 
                       type="button"
-                      onClick={() => navigate("/signin")}
+                      onClick={() => navigate("/signup")}
                       className="text-teal-500 font-semibold"
                     >
-                      Sign in
+                      Sign up
                     </button>
                   </p>
-
-                  <div className="flex justify-center items-center space-x-4">
-                    <button type="button" className="p-2 rounded-lg hover:scale-105 transition transform duration-300 shadow-lg">
-                      <img
-                        className="w-6 h-6"
-                        loading="lazy"
-                        src="https://ucarecdn.com/8f25a2ba-bdcf-4ff1-b596-088f330416ef/"
-                        alt="Google"
-                      />
-                    </button>
-                    <button type="button" className="p-2 rounded-lg hover:scale-105 transition transform duration-300 shadow-lg">
-                      <img
-                        className="w-6 h-6"
-                        loading="lazy"
-                        src="https://ucarecdn.com/6f56c0f1-c9c0-4d72-b44d-51a79ff38ea9/"
-                        alt="Facebook"
-                      />
-                    </button>
-                    <button type="button" className="p-2 rounded-lg hover:scale-105 transition transform duration-300 shadow-lg">
-                      <img
-                        className="w-6 h-6"
-                        loading="lazy"
-                        src="https://ucarecdn.com/82d7ca0a-c380-44c4-ba24-658723e2ab07/"
-                        alt="Twitter"
-                      />
-                    </button>
-                  </div>
                 </form>
               </div>
             </div>

@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../store/store";
+import { logout } from "../store/slices/authSlice";
 
-import { Coffee, Home, Phone, Briefcase, Menu } from "lucide-react";
+import { Coffee, Home, Phone, Briefcase, Menu, LogOut, User } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +23,11 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <nav
@@ -46,18 +56,38 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="outline" onClick={() => navigate("/signup")}>
-            Sign In
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <div className="flex items-center space-x-2 text-gray-700">
+                <User className="h-4 w-4" />
+                <span className="text-sm font-medium">{user?.name}</span>
+              </div>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={() => navigate("/signin")}>
+                Sign In
+              </Button>
+              <Button className="bg-teal-600" onClick={() => navigate("/signup")}>
+                Sign Up
+              </Button>
+            </>
+          )}
           <Button className="bg-teal-600">
             <Coffee className="mr-2 h-4 w-4 " /> Buy me coffee
           </Button>
         </div>
 
         <div className="md:hidden flex items-center">
-          <Button variant="outline" className="mr-2">
-            Sign In
-          </Button>
+          {!isAuthenticated && (
+            <Button variant="outline" className="mr-2" onClick={() => navigate("/signin")}>
+              Sign In
+            </Button>
+          )}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -78,6 +108,22 @@ const Navbar = () => {
                 <NavLink href="/contact" icon={<Phone className="h-4 w-4" />}>
                   Contact Us
                 </NavLink>
+                {isAuthenticated ? (
+                  <>
+                    <div className="flex items-center space-x-2 text-gray-700 py-2">
+                      <User className="h-4 w-4" />
+                      <span className="text-sm font-medium">{user?.name}</span>
+                    </div>
+                    <Button variant="outline" onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Button onClick={() => navigate("/signup")}>
+                    Sign Up
+                  </Button>
+                )}
                 <Button className="mt-4">
                   <Coffee className="mr-2 h-4 w-4" /> Buy me coffee
                 </Button>
