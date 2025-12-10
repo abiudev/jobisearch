@@ -58,6 +58,9 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-4">
           {isAuthenticated ? (
             <>
+              <Button variant="ghost" onClick={() => navigate("/dashboard")}>
+                Dashboard
+              </Button>
               <div className="flex items-center space-x-2 text-gray-700">
                 <User className="h-4 w-4" />
                 <span className="text-sm font-medium">{user?.name}</span>

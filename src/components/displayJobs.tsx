@@ -1,6 +1,7 @@
 import type React from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "@/store/store";
+import { applyToJob } from "@/store/slices/appliedJobsSlice";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, MapPin, DollarSign, Globe, Bookmark } from "lucide-react";
+import { Briefcase, MapPin, DollarSign, Globe, Bookmark, CheckCircle } from "lucide-react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface Job {
   job_id: string;
@@ -41,6 +44,37 @@ const truncateDescription = (description: string, wordLimit = 55) => {
 };
 
 const JobCard: React.FC<{ job: Job }> = ({ job }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { jobs: appliedJobs } = useSelector((state: RootState) => state.appliedJobs);
+  
+  const isApplied = appliedJobs.some(appliedJob => appliedJob.job_id === job.job_id);
+
+  const handleApply = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to apply for jobs");
+      navigate("/signin");
+      return;
+    }
+
+    try {
+      await dispatch(applyToJob({
+        jobId: job.job_id,
+        jobTitle: job.job_title,
+        company: job.employer_name,
+        location: `${job.job_city}, ${job.job_country}`,
+        jobType: job.job_employment_type,
+        salary: `${job.job_salary_currency} ${job.job_salary_min} - ${job.job_salary_max}`,
+        description: job.job_description,
+        jobUrl: job.employer_website || undefined,
+      })).unwrap();
+      toast.success("Job added to your list!");
+    } catch (error: any) {
+      toast.error(error || "Failed to add job");
+    }
+  };
+
   return (
     <Card className="w-full max-w-md flex flex-col">
       <CardHeader className="flex flex-row items-center gap-4">
@@ -113,9 +147,23 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => {
             Apply Now
           </a>
         </Button>
-        <Button variant="outline" className="flex-1 text-sm">
-          <Bookmark className="w-4 h-4 mr-2" />
-          Add to List
+        <Button 
+          variant={isApplied ? "default" : "outline"} 
+          className="flex-1 text-sm"
+          onClick={handleApply}
+          disabled={isApplied}
+        >
+          {isApplied ? (
+            <>
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Applied
+            </>
+          ) : (
+            <>
+              <Bookmark className="w-4 h-4 mr-2" />
+              Add to List
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>
