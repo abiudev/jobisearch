@@ -12,25 +12,19 @@ export const FetchJobs = createAsyncThunk(
   }) => {
     try {
       console.log("Selected Country:", selectedCountry);
-      const options = {
-        method: "GET",
-        url: "https://jsearch.p.rapidapi.com/search",
+      
+      const baseURL = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+      
+      const response = await axios.get(`${baseURL}/jobs/search`, {
         params: {
           query: searchTerm,
-          page: "1",
-          num_pages: "1",
           country: selectedCountry,
-          date_posted: "all",
+          page: '1',
+          num_pages: '1',
+          date_posted: 'all',
         },
-        headers: {
-          "x-rapidapi-key": import.meta.env.VITE_RAPIDAPI_KEY,
-          "x-rapidapi-host": "jsearch.p.rapidapi.com",
-        },
-      };
-     
-
-
-      const response = await axios.request(options);
+      });
+      
       console.log(response.data);
       
       return response.data.data;
