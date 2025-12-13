@@ -13,7 +13,15 @@ export const FetchJobs = createAsyncThunk(
     try {
       console.log("Selected Country:", selectedCountry);
       
-      const baseURL = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+      // Use VITE_API_URL if defined, otherwise valid fallback for dev/prod
+      const apiBase = import.meta.env.VITE_API_URL;
+      const baseURL = apiBase 
+        ? apiBase
+        : import.meta.env.PROD 
+          ? '/api' 
+          : 'http://localhost:3000/api';
+
+      console.log("Fetching jobs from:", `${baseURL}/jobs/search`);
       
       const response = await axios.get(`${baseURL}/jobs/search`, {
         params: {
